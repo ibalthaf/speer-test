@@ -7,14 +7,22 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
-import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiExtraModels,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Note } from './entities/note.entity';
 import { Owner, OwnerDto } from 'src/core/decorators/owner.decorator';
 import { ShareNoteDto } from './dto/share-note.dto';
+import { GetNotesDto } from './dto/get-notes.dto';
+import { query } from 'express';
 
 @ApiTags('Notes')
 @ApiBearerAuth()
@@ -40,6 +48,11 @@ export class NotesController {
   @Get()
   findAll(@Owner() owner: OwnerDto) {
     return this.notesService.findAll(owner);
+  }
+
+  @Get('/search')
+  searchAll(@Owner() owner: OwnerDto, @Query() query: GetNotesDto) {
+    return this.notesService.findAll(owner, query.searchKey);
   }
 
   @Get(':uid')

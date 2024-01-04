@@ -55,11 +55,22 @@ export class NotesService {
     return { message: `Note shared with ${toUser.name} successfully.` };
   }
 
-  async findAll(owner: OwnerDto) {
+  async findAll(owner: OwnerDto, searchKey?: string) {
     const user = await this.userService.findOne(owner.uid);
     if (!user)
       throw new NotAcceptableException('oops! The request user not found!');
-    return this.notesRepository.find({ where: { userId: user.id } });
+
+    const query = this.notesRepository
+      .createQueryBuilder('notes')
+      .where('notes.userId = :userId', { userId: user.id });
+
+    if (searchKey) {
+      query.andWhere(`notes.note LIKE :searchKey`, {
+        searchKey: `%${searchKey}%`,
+      });
+    }
+
+    return query.getMany();
   }
 
   findOne(uid: string) {
