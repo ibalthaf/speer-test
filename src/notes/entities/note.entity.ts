@@ -16,7 +16,10 @@ export class Note {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 500 })
+  @Column({ type: 'varchar', length: 200, nullable: false })
+  uid: string;
+
+  @Column()
   note: string;
 
   @Column({ nullable: false })

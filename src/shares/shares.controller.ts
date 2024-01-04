@@ -13,35 +13,35 @@ import { UpdateShareDto } from './dto/update-share.dto';
 import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import { Share } from './entities/share.entity';
 
-@ApiTags('Shares')
-@ApiBearerAuth()
-@ApiExtraModels(Share)
+// @ApiTags('Shares')
+// @ApiBearerAuth()
+// @ApiExtraModels(Share)
 @Controller('shares')
 export class SharesController {
   constructor(private readonly sharesService: SharesService) {}
 
-  @Post()
-  create(@Body() createShareDto: CreateShareDto) {
-    return this.sharesService.create(createShareDto);
-  }
+  // @Post()
+  // create(@Body() createShareDto: CreateShareDto) {
+  //   return this.sharesService.create(createShareDto);
+  // }
 
-  @Get()
-  findAll() {
-    return this.sharesService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.sharesService.findAll();
+  // }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.sharesService.findOne(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.sharesService.findOne(+id);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShareDto: UpdateShareDto) {
-    return this.sharesService.update(+id, updateShareDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateShareDto: UpdateShareDto) {
+  //   return this.sharesService.update(+id, updateShareDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.sharesService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.sharesService.remove(+id);
+  // }
 }

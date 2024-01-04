@@ -8,5 +8,6 @@ import { Share } from './entities/share.entity';
   imports: [TypeOrmModule.forFeature([Share])],
   controllers: [SharesController],
   providers: [SharesService],
+  exports: [SharesService],
 })
 export class SharesModule {}

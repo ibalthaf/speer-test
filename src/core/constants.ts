@@ -1,6 +1,6 @@
 import { DocumentBuilder, SwaggerCustomOptions } from '@nestjs/swagger';
 
-export const JWT_SECRET = process.env.JWT_SECRET;
+export const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 export enum Environment {
   Development = 'development',
