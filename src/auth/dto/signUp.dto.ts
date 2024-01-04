@@ -6,15 +6,14 @@ import {
   Matches,
   MinLength,
 } from 'class-validator';
-import { UserGender } from '../enums/gender.enum';
 import { Exclude, plainToClass } from 'class-transformer';
-import { User } from '../entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { UserGender } from 'src/users/enums/gender.enum';
 
 const passwordRegEx =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
 
-export class CreateUserDto {
+export class SignUpDto {
   @IsString()
   @MinLength(2, { message: 'Name must have atleast 2 characters.' })
   @IsNotEmpty()

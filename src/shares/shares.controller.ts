@@ -1,8 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SharesService } from './shares.service';
 import { CreateShareDto } from './dto/create-share.dto';
 import { UpdateShareDto } from './dto/update-share.dto';
+import { ApiBearerAuth, ApiExtraModels, ApiTags } from '@nestjs/swagger';
+import { Share } from './entities/share.entity';
 
+@ApiTags('Shares')
+@ApiBearerAuth()
+@ApiExtraModels(Share)
 @Controller('shares')
 export class SharesController {
   constructor(private readonly sharesService: SharesService) {}
