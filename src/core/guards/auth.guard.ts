@@ -9,12 +9,15 @@ import { Request } from 'express';
 import { JWT_SECRET } from '../constants';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { AuthService } from 'src/auth/auth.service';
+import { OwnerDto } from '../decorators/owner.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
+    private authService: AuthService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,14 +32,17 @@ export class AuthGuard implements CanActivate {
     if (!token) throw new UnauthorizedException();
 
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload: OwnerDto = await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_SECRET_KEY,
       });
 
+      const isBlacklisted = await this.authService.isBlacklisted(
+        payload.sessionId,
+      );
+      if (isBlacklisted) throw new UnauthorizedException();
+
       request['user'] = payload;
     } catch (err) {
-      console.log(err);
-
       throw new UnauthorizedException();
     }
     return true;

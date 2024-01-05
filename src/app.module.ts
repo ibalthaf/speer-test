@@ -17,6 +17,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './core/guards/auth.guard';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
