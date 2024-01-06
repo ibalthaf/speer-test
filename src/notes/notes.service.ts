@@ -1,13 +1,17 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Note } from './entities/note.entity';
-import { Repository } from 'typeorm';
-import { OwnerDto } from 'src/core/decorators/owner.decorator';
-import { UsersService } from 'src/users/users.service';
+import { Like, Repository } from 'typeorm';
+import { OwnerDto } from '../core/decorators/owner.decorator';
+import { UsersService } from '../users/users.service';
 import { ShareNoteDto } from './dto/share-note.dto';
-import { SharesService } from 'src/shares/shares.service';
+import { SharesService } from '../shares/shares.service';
 
 @Injectable()
 export class NotesService {
@@ -20,8 +24,9 @@ export class NotesService {
 
   async create(createNoteDto: CreateNoteDto, owner: OwnerDto) {
     const user = await this.userService.findOne(owner.uid);
-    if (!user)
-      throw new NotAcceptableException('oops! The request user not found!');
+
+    if (!user) throw new NotFoundException('oops! The request user not found!');
+
     return this.notesRepository.save({
       note: createNoteDto.note,
       userId: user.id,
@@ -37,10 +42,9 @@ export class NotesService {
       this.userService.findOne(owner.uid),
     ]);
 
-    if (!note)
-      throw new NotAcceptableException('oops! The request note not found!');
+    if (!note) throw new NotFoundException('oops! The request note not found!');
     if (!toUser || !fromUser)
-      throw new NotAcceptableException('oops! The user not found!');
+      throw new NotFoundException('oops! The user not found!');
     if (note.userId === toUser.id)
       throw new NotAcceptableException(
         'oops! You cannot share your notes with youself!',
@@ -57,35 +61,34 @@ export class NotesService {
 
   async findAll(owner: OwnerDto, searchKey?: string) {
     const user = await this.userService.findOne(owner.uid);
-    if (!user)
-      throw new NotAcceptableException('oops! The request user not found!');
+    if (!user) throw new NotFoundException('oops! The request user not found!');
 
-    const query = this.notesRepository
-      .createQueryBuilder('notes')
-      .where('notes.userId = :userId', { userId: user.id });
+    const whereCondition: any = { userId: user.id };
 
-    if (searchKey) {
-      query.andWhere(`notes.note LIKE :searchKey`, {
-        searchKey: `%${searchKey}%`,
-      });
-    }
+    if (searchKey) whereCondition.note = Like(`%${searchKey}%`);
 
-    return query.getMany();
+    return this.notesRepository.find({ where: whereCondition });
   }
 
-  findOne(uid: string) {
+  async findOne(uid: string) {
+    const note = await this.notesRepository.findOne({ where: { uid } });
+
+    if (!note) throw new NotFoundException('Note not found!');
     return this.notesRepository.findOne({ where: { uid } });
   }
 
   async update(uid: string, updateNoteDto: UpdateNoteDto) {
     const noteData = await this.notesRepository.findOne({ where: { uid } });
     if (!noteData)
-      throw new NotAcceptableException('oops! The request note not found!');
+      throw new NotFoundException('oops! The request note not found!');
     noteData.note = updateNoteDto.note;
     return this.notesRepository.save(noteData);
   }
 
-  remove(uid: string) {
+  async remove(uid: string) {
+    const noteData = await this.notesRepository.findOne({ where: { uid } });
+    if (!noteData)
+      throw new NotFoundException('oops! The request note not found!');
     return this.notesRepository.softDelete({ uid });
   }
 }

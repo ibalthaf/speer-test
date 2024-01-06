@@ -5,7 +5,7 @@ import {
   InsertEvent,
 } from 'typeorm';
 import { User } from './user.entity';
-import { generateHash, uuid } from 'src/core/core.utils';
+import { generateHash, uuid } from '../../core/core.utils';
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {

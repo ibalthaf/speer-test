@@ -1,19 +1,17 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
   HttpCode,
   HttpStatus,
+  Res,
+  Response,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/signUp.dto';
-import { Public } from 'src/core/decorators/public.decorator';
-import { Owner, OwnerDto } from 'src/core/decorators/owner.decorator';
+import { Public } from '../core/decorators/public.decorator';
+import { Owner, OwnerDto } from '../core/decorators/owner.decorator';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
@@ -35,6 +33,7 @@ export class AuthController {
   }
 
   @Post('/logout')
+  @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()
   logout(@Owner() owner: OwnerDto) {
     return this.authService.logout(owner);

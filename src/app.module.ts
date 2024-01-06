@@ -16,8 +16,7 @@ import { ResponseSanitizeInterceptor } from './core/interceptors/responseSanitiz
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './core/guards/auth.guard';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { CacheModule } from '@nestjs/cache-manager';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [

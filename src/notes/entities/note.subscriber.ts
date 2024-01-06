@@ -4,7 +4,7 @@ import {
   EventSubscriber,
   InsertEvent,
 } from 'typeorm';
-import { uuid } from 'src/core/core.utils';
+import { uuid } from '../../core/core.utils';
 import { Note } from './note.entity';
 
 @EventSubscriber()

@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { JWT_SECRET } from '../constants';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { OwnerDto } from '../decorators/owner.decorator';
 
 @Injectable()

@@ -1,13 +1,14 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto } from './dto/signUp.dto';
-import { UsersService } from 'src/users/users.service';
-import { compareHash, uuid } from 'src/core/core.utils';
+import { compareHash, uuid } from '../core/core.utils';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './dto/jwt.payload';
 import { Cache } from 'cache-manager';
-import { OwnerDto } from 'src/core/decorators/owner.decorator';
+import { OwnerDto } from '../core/decorators/owner.decorator';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { UsersService } from '../users/users.service';
+import { Response as ResponseExp } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,8 @@ export class AuthService {
     const user = await this.userService.findOneByEmail(loginDto.email);
     if (!user)
       throw new UnauthorizedException('Incorrect username or password!');
-    const isMatch = compareHash(loginDto.password, user.password);
+    const isMatch = await compareHash(loginDto.password, user.password);
+
     if (!isMatch)
       throw new UnauthorizedException('Incorrect username or password!');
     const { access_token } = await this.createJwtToken(user);

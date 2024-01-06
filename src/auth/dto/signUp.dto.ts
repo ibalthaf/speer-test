@@ -8,7 +8,7 @@ import {
 } from 'class-validator';
 import { Exclude, plainToClass } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserGender } from 'src/users/enums/gender.enum';
+import { UserGender } from '../../users/enums/gender.enum';
 
 const passwordRegEx =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*d)(?=.*[@$!%*?&])[A-Za-zd@$!%*?&]{8,20}$/;
@@ -54,7 +54,4 @@ export class SignUpDto {
   })
   @Exclude()
   password: string;
-
-  @Exclude()
-  id: number;
 }

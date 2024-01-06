@@ -1,6 +1,5 @@
-import { Note } from 'src/notes/entities/note.entity';
+import { Note } from '../../notes/entities/note.entity';
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -9,11 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { UserGender } from '../enums/gender.enum';
-import { Share } from 'src/shares/entities/share.entity';
+import { Share } from '../../shares/entities/share.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {

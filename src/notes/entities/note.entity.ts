@@ -1,5 +1,4 @@
-import { Share } from 'src/shares/entities/share.entity';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

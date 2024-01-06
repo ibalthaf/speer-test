@@ -1,5 +1,5 @@
-import { Note } from 'src/notes/entities/note.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Note } from '../../notes/entities/note.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

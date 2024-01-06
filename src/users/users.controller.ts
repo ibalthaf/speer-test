@@ -1,17 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseInterceptors,
-  ClassSerializerInterceptor,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBearerAuth,
   ApiConsumes,
@@ -21,9 +9,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
-import { ResponseSanitizeInterceptor } from 'src/core/interceptors/responseSanitize.interceptor';
-import { Public } from 'src/core/decorators/public.decorator';
-import { Owner, OwnerDto } from 'src/core/decorators/owner.decorator';
+import { Owner, OwnerDto } from '../core/decorators/owner.decorator';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -41,5 +27,10 @@ export class UsersController {
   })
   find(@Owner() owner: OwnerDto) {
     return this.usersService.findOne(owner.uid);
+  }
+
+  @Get('/getUsers')
+  findUser() {
+    return this.usersService.find();
   }
 }

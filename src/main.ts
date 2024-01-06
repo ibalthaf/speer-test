@@ -1,9 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { Environment, SwaggerConfig, SwaggerOptions } from './core/constants';
 import * as morgan from 'morgan';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,16 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, SwaggerConfig);
     SwaggerModule.setup('/docs', app, document, SwaggerOptions);
   }
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
 
   app.setGlobalPrefix('api');
 

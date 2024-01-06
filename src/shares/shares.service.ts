@@ -3,7 +3,6 @@ import { CreateShareDto } from './dto/create-share.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Share } from './entities/share.entity';
 import { Repository } from 'typeorm';
-import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class SharesService {

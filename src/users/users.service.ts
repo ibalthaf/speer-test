@@ -1,6 +1,9 @@
-import { Injectable, NotAcceptableException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,7 +15,7 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const userExists = await this.usersRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -25,19 +28,23 @@ export class UsersService {
     });
   }
 
-  findOneByEmail(email: string) {
+  async findOneByEmail(email: string) {
     return this.usersRepository.findOne({ where: { email } });
   }
 
-  findOne(uid: string) {
+  async findOne(uid: string) {
     return this.usersRepository.findOne({ where: { uid } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update({ id }, updateUserDto);
+  async find() {
+    return this.usersRepository.find();
   }
 
-  remove(id: number) {
-    return this.usersRepository.softDelete({ id });
-  }
+  // update(id: number, updateUserDto: UpdateUserDto) {
+  //   return this.usersRepository.update({ id }, updateUserDto);
+  // }
+
+  // remove(id: number) {
+  //   return this.usersRepository.softDelete({ id });
+  // }
 }
